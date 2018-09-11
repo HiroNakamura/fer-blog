@@ -5,3 +5,4 @@ git remote add origin https://github.com/HiroNakamura/fer-blog.git
 git push -u origin master
 
 git clone https://github.com/HiroNakamura/fer-blog.git
+
