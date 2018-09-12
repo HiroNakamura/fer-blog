@@ -19,7 +19,6 @@ def post_list(request):
 #    form = PostForm()
 #    return render(request, 'blog/post_edit.html', {'form': form})
 
-
 def post_new(request):
     if request.method == "POST":
         form = PostForm(request.POST)
@@ -46,8 +45,40 @@ def post_edit(request, pk):
         else:
             form = PostForm(instance=post)
         return render(request, 'blog/post_edit.html', {'form': form})
-        
-        
+
+'''
+def post_new(request):
+    if request.method == "POST":
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.published_date = timezone.now()
+            post.save()
+            return redirect('post_detail', pk=post.pk)
+        else:
+            form = PostForm()
+        return render(request, 'blog/post_edit.html', {'form': form})
+'''
+
+'''
+def post_edit(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    if request.method == "POST":
+        form = PostForm(request.POST, instance=post)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
+            return HttpResponseRedirect("post_detail",{"form":form})
+            #return redirect('post_detail', pk=post.pk)      
+        else:
+            form = PostForm(instance=post)
+        return render_to_response("blog/post_edit.html",{"form":form} , context_instance = RequestContext(request))
+        #return render(request, 'blog/post_edit.html', {'form': form})
+'''      
+
+#return render(request, 'blog/post_edit.html',context_instance=RequestContext(request))
 #return HttpResponseRedirect(reverse_lazy('adopcion:solicitud_listar'))
 #return render(request, 'auth_lifecycle/user_profile.html',
 #context_instance=RequestContext(request))
