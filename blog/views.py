@@ -46,4 +46,8 @@ def post_edit(request, pk):
         else:
             form = PostForm(instance=post)
         return render(request, 'blog/post_edit.html', {'form': form})
-
+        
+        
+#return HttpResponseRedirect(reverse_lazy('adopcion:solicitud_listar'))
+#return render(request, 'auth_lifecycle/user_profile.html',
+           context_instance=RequestContext(request))
