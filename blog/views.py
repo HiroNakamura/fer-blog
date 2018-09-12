@@ -50,4 +50,4 @@ def post_edit(request, pk):
         
 #return HttpResponseRedirect(reverse_lazy('adopcion:solicitud_listar'))
 #return render(request, 'auth_lifecycle/user_profile.html',
-           context_instance=RequestContext(request))
+#context_instance=RequestContext(request))
