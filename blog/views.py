@@ -15,10 +15,16 @@ def post_list(request):
     posts = Post.objects.all()
     return render(request, 'blog/post_list.html', {'posts': posts})
 
-#def post_new(request):
-#    form = PostForm()
-#    return render(request, 'blog/post_edit.html', {'form': form})
+def post_new(request):
+    try:
+        form = PostForm()
+    except:
+        print "Error al crear nuevo post"
+    return render(request, 'blog/post_edit.html', {'form': form})
 
+
+
+'''
 def post_new(request):
     if request.method == "POST":
         form = PostForm(request.POST)
@@ -31,7 +37,7 @@ def post_new(request):
         else:
             form = PostForm() 
         return render(request, 'blog/post_edit.html', {'form': form})
-
+'''
 
 def post_edit(request, pk):
     post = get_object_or_404(Post, pk=pk)
