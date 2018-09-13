@@ -4,7 +4,8 @@ from django.utils import timezone
 from .models import Post
 from django.shortcuts import render, get_object_or_404
 from .forms import PostForm
-
+from django.template import RequestContext
+from django.http import HttpResponse, HttpResponseRedirect
 
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
@@ -15,29 +16,43 @@ def post_list(request):
     posts = Post.objects.all()
     return render(request, 'blog/post_list.html', {'posts': posts})
 
+'''
 def post_new(request):
     try:
         form = PostForm()
     except:
         print "Error al crear nuevo post"
     return render(request, 'blog/post_edit.html', {'form': form})
-
-
-
 '''
+
+
+
 def post_new(request):
     if request.method == "POST":
-        form = PostForm(request.POST)
+        try:
+            form = PostForm(request.POST)
+        except:
+            print "A#-Ha ocurrido una excepcion al crear nuevo post" 
         if form.is_valid():
-            post = form.save(commit=False)
-            post.author = request.user
-            post.published_date = timezone.now()
-            post.save()
+            try:
+                post = form.save(commit=False)
+                post.author = request.user
+                post.published_date = timezone.now()
+                post.save()
+            except:
+                print "B#-Ha ocurrido una excepcion al crear nuevo post" 
             return redirect('post_detail', pk=post.pk)
         else:
-            form = PostForm() 
-        return render(request, 'blog/post_edit.html', {'form': form})
-'''
+            print "form no valido"
+            try:
+                form = PostForm()
+            except:
+                print "C#-Ha ocurrido una excepcion al crear nuevo post"
+        return HttpResponseRedirect(reverse_lazy('blog/post_edit.html'))
+        #return render(request, 'blog/post_edit.html', {'form': form})
+        #return render(request, 'blog/post_edit.html',context_instance=RequestContext(request))
+
+
 
 def post_edit(request, pk):
     post = get_object_or_404(Post, pk=pk)
