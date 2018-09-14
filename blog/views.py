@@ -6,6 +6,7 @@ from django.shortcuts import render, get_object_or_404
 from .forms import PostForm
 from django.template import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib.auth.models import User
 
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
@@ -16,17 +17,24 @@ def post_list(request):
     posts = Post.objects.all()
     return render(request, 'blog/post_list.html', {'posts': posts})
 
-'''
+
 def post_new(request):
     try:
         form = PostForm()
-    except:
-        print "Error al crear nuevo post"
+        print "formulario: ",form
+        post = form.save(commit=False)
+        user = request.user
+        print "Usuario: ",user
+        post.author = user
+        post.published_date = timezone.now()
+        post.save()
+        print "Post guardado"
+    except ValueError as error:
+        print "Error al crear nuevo post: ",error
     return render(request, 'blog/post_edit.html', {'form': form})
+
+
 '''
-
-
-
 def post_new(request):
     if request.method == "POST":
         try:
@@ -51,7 +59,7 @@ def post_new(request):
         return HttpResponseRedirect(reverse_lazy('blog/post_edit.html'))
         #return render(request, 'blog/post_edit.html', {'form': form})
         #return render(request, 'blog/post_edit.html',context_instance=RequestContext(request))
-
+'''
 
 
 def post_edit(request, pk):
