@@ -38,6 +38,38 @@ def post_new(request):
     return render(request, 'blog/post_edit.html', {'form': form})
 
 
+
+def post_edit(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    print "Post:", post
+    print "Autor:", post.author
+    print "Titulo:", post.title
+    print "Texto:", post.text
+    print "Request:",request
+    form = PostForm(request.POST, instance=post)
+    valido = "Formulario valido" if form.is_valid() else "Formulario no valido"
+    if request.method == "POST":
+        print "form: ",form
+        print valido
+        if form.is_valid():
+            print "Formulario valido"
+            post = form.save(commit=False)
+            #post.author = request.user
+            user = User.objects.get(username='admin')
+            print "Usuario: ",user
+            post.author = user
+            post.save()
+            print "Post editado"
+            return redirect('post_detail', pk=post.pk)
+        else:
+            print "form no valido"
+            form = PostForm(instance=post)
+    else:
+        print "form: ",form
+        print valido
+        return render(request, 'blog/post_edit.html', {'form': form})
+
+
 '''
 def post_new(request):
     if request.method == "POST":
@@ -65,19 +97,6 @@ def post_new(request):
         #return render(request, 'blog/post_edit.html',context_instance=RequestContext(request))
 '''
 
-
-def post_edit(request, pk):
-    post = get_object_or_404(Post, pk=pk)
-    if request.method == "POST":
-        form = PostForm(request.POST, instance=post)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.author = request.user
-            post.save()
-            return redirect('post_detail', pk=post.pk)
-        else:
-            form = PostForm(instance=post)
-        return render(request, 'blog/post_edit.html', {'form': form})
 
 '''
 def post_new(request):
