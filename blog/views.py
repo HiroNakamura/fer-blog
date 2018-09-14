@@ -39,8 +39,8 @@ def post_new(request):
                 post.author = request.user
                 post.published_date = timezone.now()
                 post.save()
-            except:
-                print "B#-Ha ocurrido una excepcion al crear nuevo post" 
+            except ValueError:
+                print "B#-Ha ocurrido una excepcion al crear nuevo post"
             return redirect('post_detail', pk=post.pk)
         else:
             print "form no valido"
