@@ -60,7 +60,9 @@ def post_edit(request, pk):
             post.author = user
             post.save()
             print "Post editado"
-            return redirect('post_detail', pk=post.pk)
+            #return redirect('post_detail', pk=post.pk)
+            posts = Post.objects.all()
+            return render(request, 'blog/post_list.html', {'posts': posts})
         else:
             print "form no valido"
             form = PostForm(instance=post)
