@@ -20,10 +20,14 @@ def post_list(request):
 
 def post_new(request):
     try:
-        form = PostForm()
+        form = PostForm(request.POST)
         print "formulario: ",form
         post = form.save(commit=False)
-        user = request.user
+        print "Usuario:",request.user
+        #user = request.user
+        #user = User()
+        #user = User.objects.get(username=request.user)
+        user = User.objects.get(username='admin')
         print "Usuario: ",user
         post.author = user
         post.published_date = timezone.now()
