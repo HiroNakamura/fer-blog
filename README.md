@@ -1,2 +1,2 @@
 # fer-blog
-Primer ejemplo con Django
+Primer ejemplo con Django. Es un sencillo blog.
